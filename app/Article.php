@@ -17,4 +17,9 @@ class Article extends Model
     {
         return "/admin/articles/{$this->id}";
     }
+
+    public function photos()
+    {
+        return $this->hasMany(Photo::class);
+    }
 }

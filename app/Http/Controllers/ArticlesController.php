@@ -61,8 +61,7 @@ class ArticlesController extends BaseController
         $article = Article::create($attributes);
 
         if (!empty($imageName)) {
-            $photo = Photo::create([
-                'article_id' => $article->id,
+            $article->photos()->create([
                 'name' => $imageName
             ]);
         }
