@@ -14,3 +14,15 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+// guests routes
+Route::resource('/articles', 'articlesController', ['only' => ['index', 'show']]);
+
+// admin routes
+Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
+    Route::resource('/articles', 'articlesController', ['only' => ['index', 'show', 'create', 'store']]);
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
