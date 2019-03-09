@@ -44,6 +44,11 @@ class ArticlesController extends BaseController
             'content' => 'required'
         ]);
 
+        if (request()->has('tags')) {
+            $tags = preg_split("/[,]+/", request('tags'));
+        }
+
+
         if (request()->hasFile('photo')) {
             request()->validate([
                     'photo' => 'required|image|mimes:jpeg,jpg|max:1024',
@@ -59,6 +64,9 @@ class ArticlesController extends BaseController
         }
 
         $article = Article::create($attributes);
+        if (!empty($tags)) {
+            $article->attachTags($tags);
+        }
 
         if (!empty($imageName)) {
             $article->photos()->create([

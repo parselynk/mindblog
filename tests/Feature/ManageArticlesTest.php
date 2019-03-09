@@ -3,9 +3,11 @@
 namespace Tests\Feature;
 
 use App\Photo;
+use App\Article;
 use Tests\TestCase;
 use App\Traits\AuthTrait;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -85,6 +87,17 @@ class ManageArticlesTest extends TestCase
         $this->post('/admin/articles', $attributes);
         $this->assertEquals(config('photo.folder').'/' . $photo->hashName(), Photo::latest()->first()->name);
         Storage::disk(config('photo.disk'))->assertExists(config('photo.folder') .'/'. $photo->hashName());
-        ;
+    }
+
+    /** @test */
+    public function an_article_can_have_tags()
+    {
+        $this->authorizeUser();
+        $attributes = factory('App\Article')->raw();
+        $attributes['tags'] = 'tag 1,tag 2';
+        $this->post('/admin/articles', $attributes);
+        $tagsArrayFromArticle = Article::latest()->first()->tags->pluck('name')->toArray();
+        $this->assertContains('tag 1', $tagsArrayFromArticle);
+        $this->assertContains('tag 2', $tagsArrayFromArticle);
     }
 }
