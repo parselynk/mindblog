@@ -63,7 +63,8 @@ class ArticlesController extends BaseController
             }
         }
 
-        $article = Article::create($attributes);
+        $article = auth()->user()->articles()->create($attributes);
+        
         if (!empty($tags)) {
             $article->attachTags($tags);
         }

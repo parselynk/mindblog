@@ -77,6 +77,15 @@ class ManageArticlesTest extends TestCase
     }
 
     /** @test */
+    public function an_article_has_an_author()
+    {
+        //$this->withoutExceptionHandling();
+        $this->authorizeUser();
+        $article = factory('App\Article')->create(['author_id' => auth()->id()]);
+        $this->assertEquals($article->author->name, auth()->user()->name);
+    }
+
+    /** @test */
     public function an_article_can_have_a_photo()
     {
         Storage::fake(config('photo.disk'));

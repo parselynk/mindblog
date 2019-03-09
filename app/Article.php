@@ -25,4 +25,9 @@ class Article extends Model
     {
         return $this->hasMany(Photo::class);
     }
+
+    public function author()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

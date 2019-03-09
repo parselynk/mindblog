@@ -17,7 +17,10 @@ class CreateArticlesTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('content');
+            $table->unsignedBigInteger('author_id');
             $table->timestamps();
+
+            $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
