@@ -33,6 +33,6 @@ class Article extends Model
 
     public function tagList()
     {
-        return $this->tags->pluck('name')->toArray();
+        return $this->tags->pluck('name');
     }
 }
