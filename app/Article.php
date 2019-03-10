@@ -30,4 +30,9 @@ class Article extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function tagList()
+    {
+        return $this->tags->pluck('name')->toArray();
+    }
 }
