@@ -30,19 +30,21 @@
 					     	<p class="text-red text-xs italic pb-4">Content is required.</p>
 					    @endif
 				    </div>
-				    <div class="w-full px-3 mb-6">
-					     <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-photo">
-					        Photo
-					     </label>
-					     <input name="photo" class="appearance-none block w-full bg-grey-lighter text-grey-darker rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white {{ $errors->has('photo') ? 'border border-red' : ''}}" id="grid-photo" type="file">
-					    @if ($errors->has('photo'))
-					     	<ul class="text-red text-xs italic pb-4">
-					     		@foreach($errors->get('photo') as $message)
-					     			<li>{{$message}}</li>
-					     		@endforeach
-					     	</ul>
-					    @endif
-				    </div>
+				    @if ($article->photos->count() == 0 || !file_exists(public_path("storage/{$article->photos()->latest()->first()->name}")))
+					    <div class="w-full px-3 mb-6">
+						     <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-photo">
+						        Photo
+						     </label>
+						     <input name="photo" class="appearance-none block w-full bg-grey-lighter text-grey-darker rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white {{ $errors->has('photo') ? 'border border-red' : ''}}" id="grid-photo" type="file">
+						    @if ($errors->has('photo'))
+						     	<ul class="text-red text-xs italic pb-4">
+						     		@foreach($errors->get('photo') as $message)
+						     			<li>{{$message}}</li>
+						     		@endforeach
+						     	</ul>
+						    @endif
+					    </div>
+					@endif
 				    <div class="w-full px-3 mb-6">
 					     <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="tags-grid">
 					        Tags

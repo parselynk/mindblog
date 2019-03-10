@@ -58,7 +58,7 @@ class ArticlesController extends BaseController
 
             if (!request()->file('photo')->isValid()) {
                 return back()->withErrors([
-                    'message' => ' Check your credentials and try again.'
+                    'message' => 'there was an error with uploading photo.'
                 ]);
             }
         }
@@ -121,8 +121,28 @@ class ArticlesController extends BaseController
             'content' => 'required'
         ]);
 
+        if (request()->hasFile('photo')) {
+            request()->validate([
+                    'photo' => 'required|image|mimes:jpeg,jpg|max:1024|dimensions:min_width=250,max_width=2048',
+            ]);
+
+            $imageName = request()->file('photo')->store(config('photo.folder'), config('photo.disk'));
+
+            if (!request()->file('photo')->isValid()) {
+                return back()->withErrors([
+                    'message' => 'there was an error with uploading photo.'
+                ]);
+            }
+        }
+
         if (request()->has('tags')) {
             $tags = preg_split("/[,]+/", request('tags'));
+        }
+
+        if (!empty($imageName)) {
+            $article->photos()->create([
+                'name' => $imageName
+            ]);
         }
 
         $article->update($attributes);
