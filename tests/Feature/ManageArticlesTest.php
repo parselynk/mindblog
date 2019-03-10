@@ -105,7 +105,7 @@ class ManageArticlesTest extends TestCase
         $attributes = factory('App\Article')->raw();
         $attributes['tags'] = 'tag 1,tag 2';
         $this->post('/admin/articles', $attributes);
-        $tagsArrayFromArticle = Article::latest()->first()->tags->pluck('name')->toArray();
+        $tagsArrayFromArticle = Article::latest()->first()->tagList();
         $this->assertContains('tag 1', $tagsArrayFromArticle);
         $this->assertContains('tag 2', $tagsArrayFromArticle);
     }
