@@ -97,7 +97,7 @@ class ArticlesController extends BaseController
      */
     public function edit(Article $article)
     {
-        if (auth()->user()->isNot($article->owner)) {
+        if (auth()->user()->isNot($article->author)) {
             return abort(403);
         }
         return view($this->getview('edit'), compact('article'));
@@ -112,7 +112,7 @@ class ArticlesController extends BaseController
      */
     public function update(Article $article)
     {
-        if (auth()->user()->isNot($project->owner)) {
+        if (auth()->user()->isNot($article->author)) {
             return abort(403);
         }
 
