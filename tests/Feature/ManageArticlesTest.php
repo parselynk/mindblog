@@ -90,12 +90,26 @@ class ManageArticlesTest extends TestCase
     {
         Storage::fake(config('photo.disk'));
         $this->authorizeUser();
-        $photo = UploadedFile::fake()->image('avatar.jpg');
+        $photo = UploadedFile::fake()->image('avatar.jpg', 400);
         $attributes = factory('App\Article')->raw();
         $attributes['photo'] = $photo;
         $this->post('/admin/articles', $attributes);
         $this->assertEquals(config('photo.folder').'/' . $photo->hashName(), Photo::latest()->first()->name);
         Storage::disk(config('photo.disk'))->assertExists(config('photo.folder') .'/'. $photo->hashName());
+    }
+
+    /** @test */
+    public function a_photo_width_must_be_between_250_to_2047_px()
+    {
+        Storage::fake(config('photo.disk'));
+        $this->authorizeUser();
+        $photoSmall = UploadedFile::fake()->image('avatar.jpg', 100);
+        $photoBig = UploadedFile::fake()->image('avatar.jpg', 3000);
+        $attributes = factory('App\Article')->raw();
+        $attributes['photo'] = $photoSmall;
+        $this->post('/admin/articles', $attributes)->assertSessionHasErrors('photo');
+        $attributes['photo'] = $photoBig;
+        $this->post('/admin/articles', $attributes)->assertSessionHasErrors('photo');
     }
 
     /** @test */
@@ -108,5 +122,13 @@ class ManageArticlesTest extends TestCase
         $tagsArrayFromArticle = Article::latest()->first()->tagList();
         $this->assertContains('tag 1', $tagsArrayFromArticle);
         $this->assertContains('tag 2', $tagsArrayFromArticle);
+    }
+
+    /** @test */
+    public function an_admin_cannot_edit_article_from_other_author()
+    {
+        $this->authorizeUser();
+        $article = factory('App\Article')->create();
+        $this->get('/admin/articles/'.$article->id.'/edit')->assertStatus(403);
     }
 }
