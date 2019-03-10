@@ -25,7 +25,7 @@
 					</div>
 					@if ($article->photos->count())
 						<div class="lg:w-1/4" >
-							  <img class="w-full h-full rounded-lg" src="{{ asset("storage/{$article->photos->first()->name}") }}" alt="Sunset in the mountains" style="min-height:200px">
+							  <img class="w-full h-full rounded-lg" src="{{ asset("storage/{$article->photos()->latest()->first()->name}") }}" alt="Sunset in the mountains" style="min-height:200px">
 						</div>
 					@endif
 				</div>

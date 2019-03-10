@@ -14,7 +14,7 @@
 						{{ $article->title }}</h3>
 					@if ($article->photos->count())
 						<div class="w-full py-4" >
-						  <img class="w-full h-full rounded-lg" src="{{ asset("storage/{$article->photos->first()->name}") }}" style="min-height:200px">
+						  <img class="w-full h-full rounded-lg" src="{{ asset("storage/{$article->photos()->latest()->first()->name}") }}" style="min-height:200px">
 						</div>
 					@endif
 					<div class="text-grey-darker py-4">
