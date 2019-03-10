@@ -15,17 +15,17 @@
 						<div class="text-grey">
 							{{ str_limit($article->content,150, ' ...') }}
 						</div>
-						<div class="-ml-4 mt-5 py-4 pl-4 flex-shrink">
-							
-							<span class="inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker mr-2">#tag1</span>					
-							<span class="inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker mr-2">#tag1</span>
-							<span class="inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker mr-2">#tag1</span>
-
-					   </div>
+						@if($article->tagList()->count())
+							<div class="-ml-4 mt-5 py-4 pl-4 flex-shrink">
+								@foreach($article->tagList() as $tag)
+									<span class="inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker mr-2">#{{$tag}}</span>
+								@endforeach				
+						   </div>
+						@endif
 					</div>
 					@if ($article->photos->count())
 						<div class="lg:w-1/4" >
-							  <img class="w-full h-full rounded-lg" src="https://tailwindcss.com/img/card-top.jpg" alt="Sunset in the mountains" style="min-height:200px">
+							  <img class="w-full h-full rounded-lg" src="{{ asset("storage/{$article->photos->first()->name}") }}" alt="Sunset in the mountains" style="min-height:200px">
 						</div>
 					@endif
 				</div>
