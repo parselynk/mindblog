@@ -6,9 +6,9 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.css" />
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
@@ -47,8 +47,16 @@
             </main>
         </div>
     </div>
-
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.js"></script>
+        <script type="application/javascript"> 
+        $( document ).ready(function() {
+            $('#tags-grid').tagsInput({   
+                'width':'100%',
+            }).addClass( "myClass" );
+        });
+    </script>
+
 </body>
 </html>

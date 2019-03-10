@@ -45,6 +45,10 @@
 	@apply bg-white p-5 rounded shadow;
 }
 
+#tags-grid_tagsinput {
+	@apply appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey rounded py-3 px-4 mb-3 leading-tight;
+}
+
 /**
  * This injects all of Tailwind's utility classes, generated based on your
  * config file.
