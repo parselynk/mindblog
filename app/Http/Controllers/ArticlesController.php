@@ -51,7 +51,7 @@ class ArticlesController extends BaseController
 
         if (request()->hasFile('photo')) {
             request()->validate([
-                    'photo' => 'required|image|mimes:jpeg,jpg|max:1024',
+                    'photo' => 'required|image|mimes:jpeg,jpg|max:1024|dimensions:min_width=250,max_width=2048',
             ]);
 
             $imageName = request()->file('photo')->store(config('photo.folder'), config('photo.disk'));
@@ -74,6 +74,8 @@ class ArticlesController extends BaseController
                 'name' => $imageName
             ]);
         }
+
+        return redirect('/admin/articles');
     }
 
     /**
@@ -95,7 +97,10 @@ class ArticlesController extends BaseController
      */
     public function edit(Article $article)
     {
-        //
+        if (auth()->user()->isNot($project->owner)) {
+            return abort(403);
+        }
+        return view($this->getview('edit'), compact('article'));
     }
 
     /**
@@ -105,9 +110,31 @@ class ArticlesController extends BaseController
      * @param  \App\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Article $article)
+    public function update(Article $article)
     {
-        //
+        if (auth()->user()->isNot($project->owner)) {
+            return abort(403);
+        }
+
+        $attributes = request()->validate([
+            'title' => 'required',
+            'content' => 'required'
+        ]);
+
+        if (request()->has('tags')) {
+            $tags = preg_split("/[,]+/", request('tags'));
+        }
+
+        $article->update($attributes);
+
+       // auth()->user()->articles()->find($article->id)->update($attributes);
+        
+        if (!empty($tags)) {
+            $article->detachTags($article->tagList()->toArray());
+            $article->attachTags($tags);
+        }
+
+        return redirect('/admin/articles/'.$article->id.'/edit')->with(['success' => 'Article is updated successfully.']);
     }
 
     /**
