@@ -3,7 +3,7 @@
 	<header class="flex items-center mb-3 py-4">
 		<div class="flex justify-between items-end w-full">
 			<h2 class="mb-3 text-grey no-underline text-sm font-normal"> 			
-			<a class="text-black no-underline" href="/articles">Articles</a> /  <a class="text-black no-underline" href="/admin/articles/{{ $article->id }}"> {{ $article->title }} </a> / Edit </h2>
+			<a class="text-black no-underline" href="/admin/articles">Articles</a> /  <a class="text-black no-underline" href="/admin/articles/{{ $article->id }}"> {{ $article->title }} </a> / Edit </h2>
 		</div>
 	</header>
 	<main class="lg:flex lg:flex-wrap -mx-3">
