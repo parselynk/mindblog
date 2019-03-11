@@ -20,7 +20,7 @@ Route::resource('/articles', 'articlesController', ['only' => ['index', 'show']]
 
 // admin routes
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
-    Route::resource('/articles', 'articlesController', ['only' => ['index', 'show', 'create', 'store', 'edit', 'update']]);
+    Route::resource('/articles', 'articlesController');
 });
 
 Auth::routes();

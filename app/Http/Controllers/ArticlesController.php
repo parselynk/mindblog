@@ -10,32 +10,26 @@ use App\Http\Controllers\BaseController;
 
 class ArticlesController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
+    public function __construct()
+    {
+        $this->middleware('can:update,article')->except(['index','create','store','show']);
+    }
+
     public function index()
     {
-        $articles = Article::all();
+        $articles = Article::latest()->get();
         return view($this->getview('index'), compact('articles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         return view($this->getview('create'));
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  ArticleRequest $request
      */
     public function store(ArticleRequest $request)
     {
@@ -46,47 +40,25 @@ class ArticlesController extends BaseController
         $request->persistTags($article);
         $request->persistPhoto($article);
 
-        return redirect('/admin/articles');
+        return redirect('/admin/articles')->with(["success" => "Article no: {$article->id} is created successfully."]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Article  $article
-     * @return \Illuminate\Http\Response
-     */
     public function show(Article $article)
     {
         return view($this->getview('show'), compact('article'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Article  $article
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Article $article)
     {
-        if (auth()->user()->isNot($article->author)) {
-            return abort(403);
-        }
         return view($this->getview('edit'), compact('article'));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Article  $article
-     * @return \Illuminate\Http\Response
+     * @param  Article        $article
+     * @param  ArticleRequest $request
      */
     public function update(Article $article, ArticleRequest $request)
     {
-        
-        if (auth()->user()->isNot($article->author)) {
-            return abort(403);
-        }
 
         $attributes = $request->validated();
         $article->update($attributes);
@@ -97,14 +69,10 @@ class ArticlesController extends BaseController
         return redirect('/admin/articles/'.$article->id.'/edit')->with(['success' => 'Article is updated successfully.']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Article  $article
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Article $article)
     {
-        //
+        $article->delete();
+        return redirect('/admin/articles')->with(["success" => "Article {$article->id} is removed successfully."]);
+        ;
     }
 }
