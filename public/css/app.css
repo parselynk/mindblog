@@ -606,6 +606,28 @@ table {
   line-height: 1.25;
 }
 
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  border-width: 1px;
+  border-color: #dae1e7;
+  border-radius: .25rem;
+  width: auto;
+  font-family: system-ui, BlinkMacSystemFont, -apple-system, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.page-link {
+  display: block;
+  color: #3490dc;
+  border-right-width: 1px;
+  border-color: #dae1e7;
+  padding-left: .75rem;
+  padding-right: .75rem;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+}
+
 /**
  * This injects all of Tailwind's utility classes, generated based on your
  * config file.

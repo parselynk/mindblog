@@ -12,7 +12,7 @@ class ArticlesTableDataSeeder extends Seeder
     public function run()
     {
          factory(App\Article::class, 50)->create()->each(function ($article) {
-            $article->photos()->save(factory(App\Photo::class)->make());
+            //$article->photos()->save(factory(App\Photo::class)->make());
          });
     }
 }

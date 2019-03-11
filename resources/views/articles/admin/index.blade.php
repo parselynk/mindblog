@@ -36,5 +36,8 @@
 		@empty
 			<div>No article.</div>
 		@endforelse
+		<div class="px-3 pb-6">
+			{{ $articles->links() }}
+		</div>
 	</main>
 @endsection

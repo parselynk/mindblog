@@ -49,6 +49,14 @@
 	@apply appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey rounded py-3 px-4 mb-3 leading-tight;
 }
 
+.pagination {
+	@apply flex list-reset border border-grey-light rounded w-auto font-sans;
+}
+
+.page-link {
+	@apply block text-blue border-r border-grey-light px-3 py-2;
+}
+
 /**
  * This injects all of Tailwind's utility classes, generated based on your
  * config file.
