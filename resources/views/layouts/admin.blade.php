@@ -55,6 +55,10 @@
             $('#tags-grid').tagsInput({   
                 'width':'100%',
             }).addClass( "myClass" );
+
+             $(".delete").on("submit", function(){
+                return confirm("Do You really want to remove this article?");
+             });
         });
     </script>
 

@@ -8,6 +8,7 @@
 	</header>
 	<main class="lg:flex lg:flex-wrap -mx-3">
 		<div class="w-full px-3 pb-6">
+			@include('layouts.message')
 			<form class="w-full" action="/admin/articles/{{$article->id}}" method="POST" enctype="multipart/form-data">
 				@csrf
 				@method('PATCH')
@@ -25,7 +26,7 @@
 					     <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-content">
 					        Content
 					     </label>
-					     <textarea name="content" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-grey mb-3 {{ $errors->has('content') ? 'border border-red' : ''}}" id="grid-content" style="min-height: 200px"> {{ $article->content }} </textarea>
+					     <textarea name="content" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-grey mb-3 {{ $errors->has('content') ? 'border border-red' : ''}}" id="grid-content" style="min-height: 200px">{{$article->content}}</textarea>
 					     @if ($errors->has('content'))
 					     	<p class="text-red text-xs italic pb-4">Content is required.</p>
 					    @endif

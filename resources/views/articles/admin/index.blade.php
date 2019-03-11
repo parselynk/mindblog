@@ -7,6 +7,9 @@
 		</div>
 	</header>
 	<main class="lg:flex lg:flex-wrap -mx-3">
+		<div class="w-full px-3 pb-6">
+			@include('layouts.message')
+		</div>
 		@forelse($articles as $article)
 			<div class="w-full px-3 pb-6">
 				<div class="card lg:flex items-start flex-shrink lg:overflow-hidden" style="min-height:250px" >
