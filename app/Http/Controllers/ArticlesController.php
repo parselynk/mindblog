@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Photo;
 use App\Article;
 use Illuminate\Http\Request;
+use App\Http\Requests\ArticleRequest;
 use App\Http\Controllers\BaseController;
 
 class ArticlesController extends BaseController
@@ -36,44 +37,14 @@ class ArticlesController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(ArticleRequest $request)
     {
 
-        $attributes = request()->validate([
-            'title' => 'required',
-            'content' => 'required'
-        ]);
-
-        if (request()->has('tags')) {
-            $tags = preg_split("/[,]+/", request('tags'));
-        }
-
-
-        if (request()->hasFile('photo')) {
-            request()->validate([
-                    'photo' => 'required|image|mimes:jpeg,jpg|max:1024|dimensions:min_width=250,max_width=2048',
-            ]);
-
-            $imageName = request()->file('photo')->store(config('photo.folder'), config('photo.disk'));
-
-            if (!request()->file('photo')->isValid()) {
-                return back()->withErrors([
-                    'message' => 'there was an error with uploading photo.'
-                ]);
-            }
-        }
-
+        $attributes = $request->validated();
         $article = auth()->user()->articles()->create($attributes);
-        
-        if (!empty($tags)) {
-            $article->attachTags($tags);
-        }
 
-        if (!empty($imageName)) {
-            $article->photos()->create([
-                'name' => $imageName
-            ]);
-        }
+        $request->persistTags($article);
+        $request->persistPhoto($article);
 
         return redirect('/admin/articles');
     }
@@ -110,49 +81,18 @@ class ArticlesController extends BaseController
      * @param  \App\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Article $article)
+    public function update(Article $article, ArticleRequest $request)
     {
+        
         if (auth()->user()->isNot($article->author)) {
             return abort(403);
         }
 
-        $attributes = request()->validate([
-            'title' => 'required',
-            'content' => 'required'
-        ]);
-
-        if (request()->hasFile('photo')) {
-            request()->validate([
-                    'photo' => 'required|image|mimes:jpeg,jpg|max:1024|dimensions:min_width=250,max_width=2048',
-            ]);
-
-            $imageName = request()->file('photo')->store(config('photo.folder'), config('photo.disk'));
-
-            if (!request()->file('photo')->isValid()) {
-                return back()->withErrors([
-                    'message' => 'there was an error with uploading photo.'
-                ]);
-            }
-        }
-
-        if (request()->has('tags')) {
-            $tags = preg_split("/[,]+/", request('tags'));
-        }
-
-        if (!empty($imageName)) {
-            $article->photos()->create([
-                'name' => $imageName
-            ]);
-        }
-
+        $attributes = $request->validated();
         $article->update($attributes);
 
-       // auth()->user()->articles()->find($article->id)->update($attributes);
-        
-        if (!empty($tags)) {
-            $article->detachTags($article->tagList()->toArray());
-            $article->attachTags($tags);
-        }
+        $request->persistTags($article);
+        $request->persistPhoto($article);
 
         return redirect('/admin/articles/'.$article->id.'/edit')->with(['success' => 'Article is updated successfully.']);
     }
