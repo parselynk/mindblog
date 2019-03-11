@@ -131,4 +131,23 @@ class ManageArticlesTest extends TestCase
         $article = factory('App\Article')->create();
         $this->get('/admin/articles/'.$article->id.'/edit')->assertStatus(403);
     }
+
+    /** @test */
+    public function an_admin_can_modify_her_article()
+    {
+        $this->authorizeUser();
+        $article = factory('App\Article')->create(['author_id' => auth()->id()]);
+        $this->assertDatabaseHas('articles', $article->toArray());
+        
+        $this->get('/admin/articles/'.$article->id.'/edit')->assertStatus(200);
+
+        $attributes = $article->toArray();
+        $attributes['title'] = 'updated title';
+        $this->patch('/admin/articles/'.$article->id, $attributes);
+
+        $this->assertEquals($attributes['title'], Article::latest()->first()->title);
+         $this->get('/admin/articles/'.$article->id.'/edit')
+             ->assertSee(Article::latest()->first()->title)
+             ->assertSee(Article::latest()->first()->content);
+    }
 }
