@@ -150,4 +150,21 @@ class ManageArticlesTest extends TestCase
              ->assertSee(Article::latest()->first()->title)
              ->assertSee(Article::latest()->first()->content);
     }
+
+    /** @test */
+    public function an_admin_cannot_remove_article_from_other_author()
+    {
+        $this->authorizeUser();
+        $article = factory('App\Article')->create();
+        $this->delete('/admin/articles/'.$article->id)->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_admin_can_remove_her_article()
+    {
+        $this->authorizeUser();
+        $article = factory('App\Article')->create(['author_id' => auth()->id() ]);
+        $this->delete('/admin/articles/'.$article->id);
+        $this->assertDatabaseMissing('articles', $article->toArray());
+    }
 }
