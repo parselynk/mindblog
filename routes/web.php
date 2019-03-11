@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 // guests routes
 Route::resource('/articles', 'articlesController', ['only' => ['index', 'show']]);
@@ -24,5 +24,3 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

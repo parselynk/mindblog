@@ -15,17 +15,6 @@
 </head>
 <body class="bg-grey-lightest h-screen antialiased">
 <div class="flex flex-col">
-    @if(Route::has('login'))
-        <div class="absolute pin-t pin-r mt-4 mr-4">
-            @auth
-                <a href="{{ url('/home') }}" class="no-underline hover:underline text-sm font-normal text-teal-darker uppercase">{{ __('Home') }}</a>
-            @else
-                <a href="{{ route('login') }}" class="no-underline hover:underline text-sm font-normal text-teal-darker uppercase pr-6">{{ __('Login') }}</a>
-                <a href="{{ route('register') }}" class="no-underline hover:underline text-sm font-normal text-teal-darker uppercase">{{ __('Register') }}</a>
-            @endauth
-        </div>
-    @endif
-
     <div class="min-h-screen flex items-center justify-center">
         <div class="flex flex-col justify-around h-full">
             <div>
@@ -34,22 +23,18 @@
                 </h1>
                 <ul class="list-reset">
                     <li class="inline pr-8">
-                        <a href="https://laravel.com/docs" class="no-underline hover:underline text-sm font-normal text-teal-darker uppercase" title="Documentation">Documentation</a>
+                        <a href="{{url('/articles')}}" class="no-underline hover:underline text-sm font-normal text-teal-darker uppercase" title="Laracasts">View Articles</a>
+                    </li>
+
+                    <li class="inline pr-8">
+                        <a href="{{url('/admin/articles')}}" class="no-underline hover:underline text-sm font-normal text-teal-darker uppercase" title="Laracasts">Admin Panel</a>
+                    </li>
+
+                    <li class="inline pr-8">
+                        <a href="https://github.com/parselynk/mindblog" class="no-underline hover:underline text-sm font-normal text-teal-darker uppercase" title="GitHub">Find this project on Github</a>
                     </li>
                     <li class="inline pr-8">
-                        <a href="https://laracasts.com" class="no-underline hover:underline text-sm font-normal text-teal-darker uppercase" title="Laracasts">Laracasts</a>
-                    </li>
-                    <li class="inline pr-8">
-                        <a href="https://laravel-news.com" class="no-underline hover:underline text-sm font-normal text-teal-darker uppercase" title="News">News</a>
-                    </li>
-                    <li class="inline pr-8">
-                        <a href="https://nova.laravel.com" class="no-underline hover:underline text-sm font-normal text-teal-darker uppercase" title="Nova">Nova</a>
-                    </li>
-                    <li class="inline pr-8">
-                        <a href="https://forge.laravel.com" class="no-underline hover:underline text-sm font-normal text-teal-darker uppercase" title="Forge">Forge</a>
-                    </li>
-                    <li class="inline pr-8">
-                        <a href="https://github.com/laravel/laravel" class="no-underline hover:underline text-sm font-normal text-teal-darker uppercase" title="GitHub">GitHub</a>
+                        <a href="https://www.linkedin.com/in/reza-karkeh-abadi-8bbb8072/" class="no-underline hover:underline text-sm font-normal text-teal-darker uppercase" title="News">Reza's Linkedin</a>
                     </li>
                 </ul>
             </div>
